@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 using Photon.Pun;
 using Photon.Realtime;
 
@@ -12,17 +11,11 @@ namespace Com.MyCompany.MyGame
     {
 
         public static GameManager Instance;
-        public GameObject ball;
         public GameObject playerPrefab;
 
         void Start()
         {
             Instance = this;
-
-            if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
-            {
-                PhotonNetwork.Instantiate(this.ball.name, new Vector3(0f, 5f, 0f), Quaternion.identity, 0);
-            }
 
             if (playerPrefab == null)
             {

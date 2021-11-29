@@ -364,10 +364,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 20
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -493,4 +493,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c4863704d30a74ba394d622e5979bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  screenOffset: {x: 0, y: 30, z: 0}
   playerNameText: {fileID: 6437548095308416008}

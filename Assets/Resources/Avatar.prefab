@@ -39,13 +39,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8546175092812760841}
     m_Modifications:
-    - target: {fileID: 744206910, guid: 1a0b48660d7fc3147be56f9d17ab02ff, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 441919742564762637, guid: 1a0b48660d7fc3147be56f9d17ab02ff, type: 3}
-      propertyPath: sceneViewId
-      value: 0
+    - target: {fileID: 364637021, guid: 1a0b48660d7fc3147be56f9d17ab02ff, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 17
       objectReference: {fileID: 0}
     - target: {fileID: 3523220116906159290, guid: 1a0b48660d7fc3147be56f9d17ab02ff, type: 3}
       propertyPath: cursor

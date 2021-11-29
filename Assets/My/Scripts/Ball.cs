@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviourPun
 {
     [SerializeField]
     private GameObject shadowObject;
@@ -33,6 +34,11 @@ public class Ball : MonoBehaviour
         {
             //Destroy(this.gameObject,3.0f);
             //Destroy(shadow,3.0f);
+        }
+
+        if (collision.gameObject.tag == "Player")
+        {
+            photonView.RequestOwnership();
         }
     }
 }

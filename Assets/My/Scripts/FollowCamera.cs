@@ -25,5 +25,10 @@ public class FollowCamera : MonoBehaviour
             transform.RotateAround(targetPos, Vector3.up, mouseInputX * Time.deltaTime * 200f);
         }
     }
+
+    public void SetTargetPos(Vector3 pos)
+    {
+        targetPos = pos;
+    }
 }
 

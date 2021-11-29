@@ -9,6 +9,7 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
     [SerializeField]
     private GameObject playerUiPrefab;
     [SerializeField]
+    private GameObject cursorObj;
     private GameObject cursor;
     private Rigidbody rigidBody;
     private Rigidbody cursorRb;
@@ -38,10 +39,18 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
 
     void Start()
     {
+#if UNITY_5_4_OR_NEWER
+        // Unity 5.4 has a new scene management. register a method to call CalledOnLevelWasLoaded.
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += (scene, loadingMode) =>
+        {
+            this.CalledOnLevelWasLoaded(scene.buildIndex);
+        };
+#endif
+
         rigidBody = GetComponent<Rigidbody>();
         myCollider = GetComponent<CapsuleCollider>();
         animator = GetComponent<Animator>();
-        cursor.transform.position = new Vector3(0f,0.1f,0f);
+        cursor = Instantiate(cursorObj, new Vector3(0f, 0.1f, 0f), Quaternion.Euler(90f, 0f, 0f));
         cursorRb = cursor.GetComponent<Rigidbody>();
         moveSpeed = 6f;
         jumpPower = 7.5f;
@@ -52,21 +61,6 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.2f;
         lineRenderer.positionCount = vectorNum;
-
-
-        CameraWork _cameraWork = this.gameObject.GetComponent<CameraWork>();
-
-        if (_cameraWork != null)
-        {
-            if (photonView.IsMine)
-            {
-                _cameraWork.OnStartFollowing();
-            }
-        }
-        else
-        {
-            Debug.LogError("<Color=Red><a>Missing</a></Color> CameraWork Component on playerPrefab.", this);
-        }
 
         if (playerUiPrefab != null)
         {
@@ -323,7 +317,16 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         }
     }
 
-    public void CalledOnLevelWasLoaded()
+#if !UNITY_5_4_OR_NEWER
+/// <summary>See CalledOnLevelWasLoaded. Outdated in Unity 5.4.</summary>
+void OnLevelWasLoaded(int level)
+{
+    this.CalledOnLevelWasLoaded(level);
+}
+#endif
+
+
+    void CalledOnLevelWasLoaded(int level)
     {
         GameObject _uiGo = Instantiate(this.playerUiPrefab);
         _uiGo.SendMessage("SetTarget", this, SendMessageOptions.RequireReceiver);

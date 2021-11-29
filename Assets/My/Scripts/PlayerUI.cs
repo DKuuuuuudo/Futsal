@@ -13,7 +13,7 @@ namespace Com.MyCompany.MyGame
         private Vector3 screenOffset = new Vector3(0f, 30f, 0f);
         [SerializeField]
         private Text playerNameText;
-        private PlayerManager target;
+        private MyPlayer target;
         float characterControllerHeight = 0f;
         Transform targetTransform;
         Renderer targetRenderer;
@@ -58,7 +58,7 @@ namespace Com.MyCompany.MyGame
         #endregion
 
         #region Public Methods
-        public void SetTarget(PlayerManager _target)
+        public void SetTarget(MyPlayer _target)
         {
             if (_target == null)
             {
@@ -74,12 +74,8 @@ namespace Com.MyCompany.MyGame
 
             targetTransform = this.target.GetComponent<Transform>();
             targetRenderer = this.target.GetComponent<Renderer>();
-            CharacterController characterController = _target.GetComponent<CharacterController>();
-            // Get data from the Player that won't change during the lifetime of this Component
-            if (characterController != null)
-            {
-                characterControllerHeight = characterController.height;
-            }
+            characterControllerHeight = 1.5f;
+            
 
         }
         #endregion
