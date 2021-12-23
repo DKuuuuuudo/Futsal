@@ -8,13 +8,12 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
 {
     [SerializeField]
     private GameObject playerUiPrefab;
-    [SerializeField]
-    private GameObject cursorObj;
     private GameObject cursor;
     private Rigidbody rigidBody;
     private Rigidbody cursorRb;
     private CapsuleCollider myCollider;
     private Animator animator;
+    private Vector3 targetPos;
     private Vector3 input;
     private Vector3 velocity;
     private LineRenderer lineRenderer;
@@ -32,6 +31,9 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         if (photonView.IsMine)
         {
             MyPlayer.LocalPlayerInstance = this.gameObject;
+            targetPos = this.gameObject.transform.position;
+            cursor = PhotonNetwork.Instantiate("Cursor", new Vector3(0f, 0.1f, 0f), Quaternion.Euler(90f, 0f, 0f));
+            cursorRb = cursor.GetComponent<Rigidbody>();
         }
 
         DontDestroyOnLoad(this.gameObject);
@@ -50,8 +52,6 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         rigidBody = GetComponent<Rigidbody>();
         myCollider = GetComponent<CapsuleCollider>();
         animator = GetComponent<Animator>();
-        cursor = Instantiate(cursorObj, new Vector3(0f, 0.1f, 0f), Quaternion.Euler(90f, 0f, 0f));
-        cursorRb = cursor.GetComponent<Rigidbody>();
         moveSpeed = 6f;
         jumpPower = 7.5f;
         power = 5.0f;
@@ -85,6 +85,7 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         CursorMove();
         PowerControll();
         DrowLine();
+        followCamera();
     }
 
     private void FixedUpdate()
@@ -303,6 +304,18 @@ public class MyPlayer : MonoBehaviourPunCallbacks, IPunObservable
         Vector3 q2 = Vector3.Lerp(q0, q1, t);
 
         return q2;
+    }
+
+    private void followCamera()
+    {
+        Camera.main.transform.position += this.transform.position - targetPos;
+        targetPos = this.transform.position;
+
+        if (Input.GetMouseButton(1))
+        {
+            float mouseInputX = Input.GetAxis("Mouse X");
+            Camera.main.transform.RotateAround(targetPos, Vector3.up, mouseInputX * Time.deltaTime * 400f);
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

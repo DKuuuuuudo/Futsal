@@ -1,41 +1,27 @@
-using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCamera : MonoBehaviourPunCallbacks
+public class FollowCamera : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject target;
     private Vector3 targetPos;
 
     void Start()
     {
-        if (photonView.IsMine)
-        {
-            target = GameObject.FindGameObjectWithTag("Player");
-            targetPos = target.transform.position;
-            this.transform.LookAt(target.transform);
-        }
+        targetPos = this.transform.position;
     }
 
     void Update()
     {
 
-        transform.position += target.transform.position - targetPos;
-        targetPos = target.transform.position;
+        Camera.main.transform.position += this.transform.position - targetPos;
+        targetPos = this.transform.position;
 
         if (Input.GetMouseButton(1))
         {
             float mouseInputX = Input.GetAxis("Mouse X");
-            float mouseInputY = Input.GetAxis("Mouse Y");
-            transform.RotateAround(targetPos, Vector3.up, mouseInputX * Time.deltaTime * 200f);
+            Camera.main.transform.RotateAround(targetPos, Vector3.up, mouseInputX * Time.deltaTime * 400f);
         }
-    }
-
-    public void SetTargetPos(Vector3 pos)
-    {
-        targetPos = pos;
     }
 }
 
