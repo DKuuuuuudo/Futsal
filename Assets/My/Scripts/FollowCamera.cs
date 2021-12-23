@@ -1,8 +1,9 @@
+using Photon.Pun;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowCamera : MonoBehaviour
+public class FollowCamera : MonoBehaviourPunCallbacks
 {
     [SerializeField]
     private GameObject target;
@@ -10,11 +11,17 @@ public class FollowCamera : MonoBehaviour
 
     void Start()
     {
-        targetPos = target.transform.position;
+        if (photonView.IsMine)
+        {
+            target = GameObject.FindGameObjectWithTag("Player");
+            targetPos = target.transform.position;
+            this.transform.LookAt(target.transform);
+        }
     }
 
     void Update()
     {
+
         transform.position += target.transform.position - targetPos;
         targetPos = target.transform.position;
 
